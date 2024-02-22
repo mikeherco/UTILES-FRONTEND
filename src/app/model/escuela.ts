@@ -1,0 +1,19 @@
+export class Escuela{
+    id!:string;
+    nombre!:string;
+    clave!:string;
+    turno!:string;
+    colonia!:string;
+    calle!:string;
+    numero!:string;
+    domicilio!:string;
+    region!:string;
+    zonaEscolar!:string;
+    claveZonaEscolar!:string;
+    nivel!:string;
+    subnivel!:string;
+    control!:string;
+    sostenimiento!:string;
+    nombreMostrar!:string;
+    geom!:any[];   
+}

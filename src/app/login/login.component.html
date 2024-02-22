@@ -1,0 +1,96 @@
+<div  class="text-center">
+    <div *ngIf="show">
+        <h3>Inicie sesion: </h3>
+        <form class="form" [formGroup]="loginForm" (submit)="onSubmit()">
+
+            <label  for="username" >Username:</label>
+            <br>
+            <input type="text" id="username" [(ngModel)]="login.username" name="username" formControlName="username">
+            <br>
+            <label for="password">Password:</label>
+            <br>
+            <input type="password" id="password" [(ngModel)]="login.password" name="password" formControlName="password">
+            <br>
+            <br>
+            <button dclass="btn btn-success" type="submit" [disabled]="!loginForm.valid">Login</button>
+        </form>
+        <h3 class="text-danger" *ngIf="errorMessage != ''">Credenciales incorrectas o no registradas. Intente de nuevo</h3>
+    </div>
+    <br>
+    <div *ngIf="!show">
+    
+    
+    <a for="curpReq">Curp:</a>
+    <input type="text" #curpReq name="curpReq">{{curpReq.value}}
+    <br><br>
+    <button *ngIf="!byCurp"  (click)="byCurpSol=!byCurpSol;submit('curpReq.value')">CURP solicitante</button>
+    <button *ngIf="!byCurpSol"  (click)="byCurp=!byCurp; submit('curpReq.value')" >CURP del estudiante</button>
+    </div>
+    <div *ngIf="(byCurp || byCurpSol)">
+        <form class= "form" [formGroup]="estudianteForm" (ngSubmit)="submit('curpReq.value')" [attr.disabled]="!isSuperAdmin">
+            <label for="curp">Curp:</label>
+            <br>
+            <input type="text" [attr.disabled]="true" [(ngModel)]="estudiante.curp" id="curp" pattern="[A-Z]{4}\d{6}[A-Z]{6}\d{2}" formControlName="curp"><br>
+            <br>
+            <label for="nombre">Nombre: </label>
+            <br>
+            <input type="text" id="nombre" pattern="^(?:[A-Z][a-z]*\s)*[A-Z][a-z]*$" [(ngModel)]="estudiante.nombre" formControlName="nombre"><br>
+            <br>
+            <label for="primerApellido">Primer apellido:</label>
+            <br>
+            <input type="text" id="primerApellido" pattern="[A-Z][A-Za-z]{1,}" [(ngModel)]="estudiante.primerApellido" formControlName="primerApellido"><br>
+            <br>
+            <label for="segundoApellido">Segundo apellido:</label>
+            <br>
+            <input type="text" id="segundoApellido" pattern="[A-Z][A-Za-z]{1,}" [(ngModel)]="estudiante.segundoApellido" formControlName="segundoApellido"><br>
+            <br>
+            <label for="sexo">Sexo: </label>
+            <br>
+            <select id="sexo"  formControlName="sexo">
+              <option *ngFor="let sexo of this.estudiante.sexo" [(ngModel)]="estudiante.sexo">{{this.estudiante.sexo}}</option>
+              <option value="M">Mujer</option>
+            </select><br>
+            <br>
+            <label for="genero">Genero:</label>
+            <br>
+            <select id="genero"  formControlName="genero">
+              <option  *ngFor="let gen of estudiante.genero.id" [(ngModel)]="estudiante.genero.id">{{this.estudiante.genero}}</option>
+              <option value="2">Femenino</option>
+            </select>
+            <br>
+            <label for="fechaNacimiento">Fecha de nacimiento:</label>
+            <br>
+            <input type="date" id="fechaNacimiento" [(ngModel)]="estudiante.fechaNacimiento" formControlName="fechaNacimiento"><br>
+            <br>
+            <label for="edad">Edad:</label>
+            <br>
+            <input type="number" id="edad" min= "1" [(ngModel)]="estudiante.edad" formControlName="edad"><br>
+            <br>
+            <label for="nivelEscolar" >Nivel escolar:</label>
+            <br>
+            <select id="nivelEscolar" formControlName="nivelEscolar" [(ngModel)]="estudiante.nivelEscolar" (ngModelChange)="setGrado()">
+              <option  value="Preescolar">Preescolar</option>
+              <option  value="Primaria">Primaria</option>
+              <option  value="Secundaria">Secundaria</option>
+            </select>
+            <br>
+            <label for="grado" >Grado a cursar (2023-2024):</label>
+            <br>
+            <select *ngIf="selectedNivelEscolar!='Preescolar'" id="grado" formControlName="grado" [(ngModel)]="estudiante.grado">
+              <option *ngFor="let grados of gradoDisplay">{{grados}}</option>
+            </select>
+            <br>
+            <label for="edad" >Estado:</label>
+            <br>
+            <input type="text" id="estado" pattern="^(?:[A-Z][a-z]*\s)*[A-Z][a-z]*$" [(ngModel)]="estudiante.estado.nombre" formControlName="estado"><br>
+            <br>
+            <select id="escuela" formControlName="escuela" [(ngModel)]="estudiante.edad" [(ngModel)]="selectedEscuela">
+              <option selected>{{estudiante.escuela.nombreMostrar}}</option>
+              <option *ngFor="let e of escuela" [ngValue] = "e" >{{e.nombreMostrar}}</option>
+            </select>
+            <br>
+            <br>
+            <button *ngIf="show" [disabled]="!isSuperAdmin" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>

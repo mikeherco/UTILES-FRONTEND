@@ -1,0 +1,111 @@
+<div class="text-center">
+<div *ngIf="show"><h3>Ingrese sus datos</h3>
+  <form class= "form" [formGroup]="solicitanteForm" (ngSubmit)="submit()">
+    <label for="curp">Curp:</label>
+    <br>
+    <input type="text" id="curp" pattern="[A-Z]{4}\d{6}[A-Z]{6}\d{2}" formControlName="curp"><br>
+    <br>
+    <label for="nombre">Nombre: </label>
+    <br>
+    <input type="text" id="nombre" pattern="^(?:[A-Z][a-z]*\s)*[A-Z][a-z]*$" formControlName="nombre"><br>
+    <br>
+    <label for="primerApellido">Primer apellido:</label>
+    <br>
+    <input type="text" id="primerApellido" pattern="[A-Z][A-Za-z]{1,}" formControlName="primerApellido"><br>
+    <br>
+    <label for="segundoApellido">Segundo apellido:</label>
+    <br>
+    <input type="text" id="segundoApellido" pattern="[A-Z][A-Za-z]{1,}" formControlName="segundoApellido"><br>
+    <br>
+    <label for="sexo">Sexo: </label>
+    <br>
+    <select id="sexo" formControlName="sexo">
+      <option value="H">Hombre</option>
+      <option value="M">Mujer</option>
+    </select><br>
+    <br>
+    <label for="genero">Genero:</label>
+    <br>
+    <select id="genero" formControlName="genero">
+      <option value="1">Masculino</option>
+      <option value="2">Femenino</option>
+    </select>
+    <br>
+    <label for="fechaNacimiento">Fecha de nacimiento:</label>
+    <br>
+    <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento"><br>
+    <br>
+    <label for="edad">Edad:</label>
+    <br>
+    <input type="number" id="edad" min="18" formControlName="edad"><br>
+    <br>
+    <label for="edad" >Estado:</label>
+    <br>
+    <input type="text" id="estado" pattern="^(?:[A-Z][a-z]*\s)*[A-Z][a-z]*$" formControlName="estado"><br>
+    <br>
+    <button [disabled]="!solicitanteForm.valid" class="btn btn-primary" >Submit</button>
+  </form>
+  <div  class="text-info" *ngIf="solicitanteForm.invalid">
+    <a>Siga los siguientes ejemplos en formato:</a><br>
+    <a *ngIf="solicitanteForm.controls['curp'].invalid">- ABCD000111ABCDEF00</a><br>
+    <a *ngIf="solicitanteForm.controls['nombre'].invalid">- Miguel Angel</a><br>
+    <a *ngIf="solicitanteForm.controls['primerApellido'].invalid">- Hernandez</a><br>
+    <a *ngIf="solicitanteForm.controls['segundoApellido'].invalid">- Cortes</a><br>
+    <a *ngIf="solicitanteForm.controls['edad'].invalid">- Debe ser mayor de edad para registrar un estudiante</a><br>
+    <a *ngIf="solicitanteForm.controls['estado'].invalid">- Nuevo Leon</a><br>
+    <a *ngIf="solicitanteForm.controls['nombre'].invalid || solicitanteForm.controls['primerApellido'].invalid ||
+          solicitanteForm.controls['segundoApellido'].invalid || solicitanteForm.controls['estado'].invalid">
+          Nombre, Apellidos y Estado sin acentos
+    </a><br>
+  </div>
+</div>
+<div *ngIf="!show"><h3>Complete sus datos</h3>
+  <form class= "form" [formGroup]="direccionForm" (ngSubmit)="submit()">
+      <label for="curp">Curp:</label>
+      <br>
+      <input type="text" id="curp" formControlName="curp" placeholder="{{solicitante.curp}}" [attr.disabled]="true">
+      <br>
+      <label for="municipio">Municipio:</label>
+      <br>
+      <select id="munSelect" class="text-center" formControlName="municipio" [(ngModel)] ="selectedMunicipio" (ngModelChange)="getColonia()">
+        <option id="municipio" *ngFor= "let municipio of munDisplay.results" [ngValue]="municipio.nombre">{{municipio.nombre}}</option>
+      </select>
+      <br>
+      <label for="colonia">colonia:</label>
+      <br>
+      <input *ngIf ="selectedMunicipio!='Monterrey'" type="text" id="colonia" formControlName="colonia">
+      <select id="colonia" class="text-center" *ngIf="selectedMunicipio=='Monterrey'"  formControlName="colonia">
+        <option id="colonia"  *ngFor= "let colonia of colDisplay.results" >{{colonia.nombre}}</option>
+      </select>
+      <br>
+      <label for="calle">Calle:</label>
+      <br>
+      <input type="text" id="calle" formControlName="calle">
+      <br>
+      <label for="numeroExt">Numero exterior:</label>
+      <br>
+      <input type="number" id="numeroExt" pattern="[0-9]{1,}" formControlName="numeroExt">
+      <br>
+      <label for="numeroInt">Numero interior:</label>
+      <br>
+      <input type="number" id="numeroInt" pattern="[0-9]{1,}" formControlName="numeroInt">
+      <br>
+      <label for="codigoPostal">Codigo Postal:</label>
+      <br>
+      <input type="number" id="codigoPostal" pattern="[0-9]{5}" formControlName="codigoPostal">
+      <br>
+      <label for="telefono">Telefono:</label>
+      <br>
+      <input type="text" id="telefono" formControlName="telefono" pattern="[0-9]{10}">
+      <br>
+      <br>
+      <button [disabled]="!direccionForm.valid" class="btn btn-primary" >Submit</button>
+    </form>
+  </div>
+</div>
+<div class="text-center" *ngIf="dirsuccessMessage!='' && successMessage!=''">
+  <a class="text-success">Sus datos fueron registrados correcetamente!</a>
+  <br>
+  <br>
+  <button class="btn btn-success" [routerLink]="['/estudiante']">Registrar estudiante(s)</button>
+</div>

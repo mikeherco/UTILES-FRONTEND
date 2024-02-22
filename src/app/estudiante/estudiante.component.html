@@ -1,0 +1,88 @@
+<div class="text-center">
+<div><h3>Ingrese datos del estudiante</h3>
+  <form class= "form" [formGroup]="estudianteForm" (ngSubmit)="submit()">
+      <label for="curp">Curp:</label>
+      <br>
+      <input type="text" id="curp" pattern="[A-Z]{4}\d{6}[A-Z]{6}\d{2}" formControlName="curp"><br>
+      <br>
+      <label for="nombre">Nombre: </label>
+      <br>
+      <input type="text" id="nombre" pattern="^(?:[A-Z][a-z]*\s)*[A-Z][a-z]*$" formControlName="nombre"><br>
+      <br>
+      <label for="primerApellido">Primer apellido:</label>
+      <br>
+      <input type="text" id="primerApellido" pattern="[A-Z][A-Za-z]{1,}" formControlName="primerApellido"><br>
+      <br>
+      <label for="segundoApellido">Segundo apellido:</label>
+      <br>
+      <input type="text" id="segundoApellido" pattern="[A-Z][A-Za-z]{1,}" formControlName="segundoApellido"><br>
+      <br>
+      <label for="sexo">Sexo: </label>
+      <br>
+      <select id="sexo" formControlName="sexo">
+        <option value="H">Hombre</option>
+        <option value="M">Mujer</option>
+      </select><br>
+      <br>
+      <label for="genero">Genero:</label>
+      <br>
+      <select id="genero" formControlName="genero">
+        <option value="1">Masculino</option>
+        <option value="2">Femenino</option>
+      </select>
+      <br>
+      <label for="fechaNacimiento">Fecha de nacimiento:</label>
+      <br>
+      <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento"><br>
+      <br>
+      <label for="edad">Edad:</label>
+      <br>
+      <input type="number" id="edad" min= "1" formControlName="edad"><br>
+      <br>
+      <label for="nivelEscolar" >Nivel escolar:</label>
+      <br>
+      <select id="nivelEscolar" formControlName="nivelEscolar" [(ngModel)] ="selectedNivelEscolar" (ngModelChange)="setGrado()">
+        <option selected  value="Preescolar">Preescolar</option>
+        <option  value="Primaria">Primaria</option>
+        <option  value="Secundaria">Secundaria</option>
+      </select>
+      <br>
+      <label for="grado" >Grado a cursar (2023-2024):</label>
+      <br>
+      <select *ngIf="selectedNivelEscolar!='Preescolar'" id="grado" formControlName="grado" >
+        <option *ngFor="let grados of gradoDisplay">{{grados}}</option>
+      </select>
+      <br>
+      <label for="edad" >Estado:</label>
+      <br>
+      <input type="text" id="estado" pattern="^(?:[A-Z][a-z]*\s)*[A-Z][a-z]*$" formControlName="estado"><br>
+      <br>
+      <select id="escuela" formControlName="escuela" [(ngModel)]="selectedEscuela">
+        <option *ngFor="let e of escuela" [ngValue] = "e" >{{e.nombreMostrar}}</option>
+      </select>
+      <br>
+      <br>
+      <button *ngIf="show" [disabled]="!estudianteForm.valid" class="btn btn-primary">Submit</button>
+      <h4 class="text-success" *ngIf="successMessage != '' && estudianteForm.valid"> Estudiante registrado exitosamente!</h4>
+      <h4 class="text-warning" *ngIf="errorMessage != ''"> No se pudo registrar al estudiante, intentelo mas tarde</h4>
+      <h4 class="text-danger" *ngIf="!validCurp">Estudiante ya registrado</h4>
+      <button class="btn btn-info" *ngIf="!show" (click)="reset(); validCurp = true; show=true">Registrar otro estudiante</button>
+  </form>
+  <br>
+  
+  
+  <div  class="text-info" *ngIf="estudianteForm.invalid">
+      <a>Siga los siguientes ejemplos en formato:</a><br>
+      <a  *ngIf="estudianteForm.controls['nombre'].invalid">- ABCD000111ABCDEF00</a><br>
+      <a  *ngIf="estudianteForm.controls['nombre'].invalid">- Miguel Angel</a><br>
+      <a *ngIf="estudianteForm.controls['primerApellido'].invalid">- Hernandez</a><br>
+      <a *ngIf="estudianteForm.controls['segundoApellido'].invalid">- Cortes</a><br>
+      <a *ngIf="estudianteForm.controls['estado'].invalid">- Nuevo Leon</a><br>
+      <a *ngIf="estudianteForm.controls['nombre'].invalid || estudianteForm.controls['primerApellido'].invalid ||
+          estudianteForm.controls['segundoApellido'].invalid || estudianteForm.controls['estado'].invalid">
+          Nombre, Apellidos y Estado sin acentos
+      </a><br>
+      <a *ngIf="estudianteForm.controls['escuela'].invalid">- Es necesario escoger una escuela</a><br>
+    </div>
+</div>
+</div>
